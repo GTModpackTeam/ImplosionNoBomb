@@ -1,5 +1,7 @@
 package com.github.gtexpert.inb.core;
 
+import static gregtech.api.util.GTUtility.gregtechId;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -52,14 +54,13 @@ public class INBCoreModule implements IINBModule {
     public void preInit(FMLPreInitializationEvent event) {
         proxy.preInit(event);
 
-        RecipeMaps.IMPLOSION_RECIPES.onRecipeBuild(
-                recipeBuilder -> {
-                    INBRecipeMaps.ELECTRIC_IMPLOSION_COMPRESSOR_RECIPES.recipeBuilder()
-                            .inputs(recipeBuilder.getInputs().toArray(new GTRecipeInput[0]))
-                            .outputs(recipeBuilder.getOutputs())
-                            .chancedOutputs(recipeBuilder.getChancedOutputs())
-                            .buildAndRegister();
-                });
+        RecipeMaps.IMPLOSION_RECIPES.onRecipeBuild(gregtechId("implosion_compressor"), recipeBuilder -> {
+            INBRecipeMaps.ELECTRIC_IMPLOSION_COMPRESSOR_RECIPES.recipeBuilder()
+                    .inputs(recipeBuilder.getInputs().toArray(new GTRecipeInput[0]))
+                    .outputs(recipeBuilder.getOutputs())
+                    .chancedOutputs(recipeBuilder.getChancedOutputs())
+                    .buildAndRegister();
+        });
     }
 
     @Override

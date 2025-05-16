@@ -19,6 +19,8 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import gregtech.GTInternalTags;
+import gregtech.api.GregTechAPI;
+import gregtech.api.metatileentity.registry.MTEManager;
 
 import com.github.gtexpert.inb.api.INBValues;
 import com.github.gtexpert.inb.api.util.INBLog;
@@ -30,7 +32,8 @@ import com.github.gtexpert.inb.modules.INBModules;
      name = INBValues.MODNAME,
      acceptedMinecraftVersions = "[1.12.2]",
      version = Tags.VERSION,
-     dependencies = GTInternalTags.DEP_VERSION_STRING + "required-after:" + Mods.Names.MIXINBOOTER + ";" +
+     dependencies = GTInternalTags.DEP_VERSION_STRING + "required-after:" + Mods.Names.MODULRAUI + ";" +
+             "required-after:" + Mods.Names.MIXINBOOTER + ";" +
              "required-after:" + Mods.Names.GREGICALITY_MULTIBLOCKS + ";")
 @Mod.EventBusSubscriber(modid = INBValues.MODID)
 public class INBMod {
@@ -144,6 +147,11 @@ public class INBMod {
             itemBlock.setRegistryName(registryName);
         }
         return itemBlock;
+    }
+
+    @SubscribeEvent
+    public static void registerMTERegistry(MTEManager.MTERegistryEvent event) {
+        GregTechAPI.mteManager.createRegistry(INBValues.MODID);
     }
 
     @SubscribeEvent

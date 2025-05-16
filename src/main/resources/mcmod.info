@@ -12,6 +12,8 @@
     ],
     "credits": "",
     "dependencies": [
+        "chickenchunks",
+        "modularui",
         "mixinbooter",
         "gregtech",
         "gcym"
