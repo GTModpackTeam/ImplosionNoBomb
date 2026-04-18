@@ -1,7 +1,12 @@
 package com.github.gtexpert.inb.core;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -17,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.ingredients.GTRecipeInput;
-import gregtech.loaders.recipe.RecyclingRecipes;
 
 import com.github.gtexpert.inb.api.INBValues;
 import com.github.gtexpert.inb.api.modules.IINBModule;
@@ -54,6 +58,15 @@ public class INBCoreModule implements IINBModule {
 
         RecipeMaps.IMPLOSION_RECIPES.onRecipeBuild(
                 recipeBuilder -> {
+                    List<ItemStack> inputs = recipeBuilder.getInputs().stream()
+                            .map(GTRecipeInput::getInputStacks)
+                            .filter(stacks -> stacks.length > 0)
+                            .map(stacks -> stacks[0])
+                            .collect(Collectors.toList());
+                    if (INBRecipeMaps.ELECTRIC_IMPLOSION_COMPRESSOR_RECIPES
+                            .findRecipe(Long.MAX_VALUE, inputs, Collections.emptyList()) != null) {
+                        return;
+                    }
                     INBRecipeMaps.ELECTRIC_IMPLOSION_COMPRESSOR_RECIPES.recipeBuilder()
                             .inputs(recipeBuilder.getInputs().toArray(new GTRecipeInput[0]))
                             .outputs(recipeBuilder.getOutputs())
@@ -66,9 +79,7 @@ public class INBCoreModule implements IINBModule {
     public void init(FMLInitializationEvent event) {}
 
     @Override
-    public void postInit(FMLPostInitializationEvent event) {
-        RecyclingRecipes.init();
-    }
+    public void postInit(FMLPostInitializationEvent event) {}
 
     @Override
     public void registerBlocks(RegistryEvent.Register<Block> event) {
