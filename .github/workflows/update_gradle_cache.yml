@@ -14,12 +14,12 @@ concurrency:
 
 jobs:
   update-cache:
-    name: Update Grade Cache
+    name: Update Gradle Cache
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Build
         uses: ./.github/actions/build_setup
@@ -27,4 +27,4 @@ jobs:
           update-cache: true
 
       - name: Build Project with Gradle
-        run: ./gradlew --info assemble
+        run: ./gradlew --info --stacktrace assemble
